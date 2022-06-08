@@ -1,0 +1,94 @@
+@model IList<BDRD.DemoCICD.CRUDAPP.Web.ViewModels.DisplayViewModel>
+@{
+  ViewData["Title"] = "Home";
+  string badgeClassName;
+}
+<div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col" style="width: 22%;">Name</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">Due Date</th>
+        <th scope="col">Status</th>
+        <th scope="col" style="text-align: right;">
+          @* <a href=""><button class="btn btn-primary" style="color: red !important;">@Html.ActionLink("Addtodo",
+            "AddTodoItem", "Home")</button></a> *@
+          <a class="btn btn-primary" asp-action="TodoItemInsertPage">AddTodoItem</a>
+        </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      @for (int i = 0; i < Model.Count(); i++)
+      {
+        switch (Model[i].Status.Id)
+        {
+          case 0:
+            badgeClassName = "badge bg-secondary";
+            break;
+          case 1:
+            badgeClassName = "badge bg-info";
+            break;
+          default:
+            badgeClassName = "badge bg-success";
+            break;
+        }
+        <tr id="todoItem-@Model[i].Id">
+          <th scope="row">@Html.DisplayName($"{i+1}")</th>
+          <td>
+            <div class="todo-item-name">
+              <span>
+                @Html.DisplayFor(model=>Model[i].Name)
+              </span>
+              <input type="hidden" value="@Model[i].Name">
+            </div>
+          </td>
+          <td>@Html.DisplayFor(model=>Model[i].StartDate)</td>
+          <td>@Html.DisplayFor(model=> Model[i].DueDate)</td>
+          <td>
+            <a>
+              <span class="@badgeClassName" data-status-id="@Model[i].Status.Id">@Model[i].Status.Name</span>
+            </a>
+          </td>
+          <td>
+            <a class="btn btn-primary" asp-action="ShowTodoItemDetail" asp-route-id="@Model[i].Id">View</a>
+            @* <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model[i].Id">Delete</a> *@
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Delete
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Bạn có muốn xóa ?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    @* <button type="button" class="btn btn-danger" asp-action="Delete"
+                      asp-route-id="@Model[i].Id">Xóa</button> *@
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model[i].Id">Delete</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+
+  <!-- Modal -->
+
+</div>
+
+@section scripts{
+<script src="~/js/index.js">
+</script>
+}

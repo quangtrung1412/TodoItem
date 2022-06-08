@@ -1,0 +1,52 @@
+@model BDRD.DemoCICD.CRUDAPP.Web.ViewModels.UpsertViewModel;
+
+@{
+  ViewData["Title"] = "Detail";
+  var listStatus = ViewData["ListStatus"] as IList<TodoItemStatus>;
+}
+<div>
+  <div class="title">
+    <h3>Detail Todo Item </h3>
+  </div>
+  <form asp-action="UpdateTodoItem" asp-route-id="@Model.Id" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" class="form-control">
+    <div class="form-group">
+      <label asp-for="Name"></label>
+      <input type="text" asp-for="Name" class="form-control">
+      <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+      <label asp-for="StartDate"></label>
+      <input type="date" asp-for="StartDate" class="form-control">
+      <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+      <label asp-for="DueDate"></label>
+      <input type="date" asp-for="DueDate" class="form-control">
+      <span asp-validation-for="DueDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+      <label asp-for="Status"></label>
+      <select class="form-control" asp-for="Status">
+        @if (listStatus != null)
+        {
+          @foreach (var status in listStatus)
+          {
+            <option value="@status.Id">@status.Name</option>
+          }
+        }
+
+      </select>
+    </div>
+    <div class="form-group">
+      <label asp-for="Note"></label>
+      <textarea class="form-control" asp-for="Note" rows="2"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" value="Save">Submit</button>
+    <a class="btn btn-danger" asp-action="Index">Back</a>
+  </form>
+</div>
+@section scripts{
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

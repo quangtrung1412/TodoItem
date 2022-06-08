@@ -1,0 +1,19 @@
+.badge{
+    cursor: pointer;
+    user-select: none;
+}
+.table .todo-item-name
+{
+    position: relative;
+    
+}
+
+.table .todo-item-name span, input
+{
+    position: absolute;
+}
+.table .todo-item-name span
+{
+    user-select: none;
+    cursor: pointer;
+}
